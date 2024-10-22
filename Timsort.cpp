@@ -32,7 +32,20 @@ void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
 
 void timsort(Vector<int> &arr, const int& minrun)
 {
-    
+    for (size_t i = 0, counter = 1; i < arr.get_size(); i += minrun, counter++)
+    {
+        if (i + minrun < arr.get_size())
+            insert_sort(arr, i, i + minrun);
+        else 
+            insert_sort(arr, i, arr.get_size());
+        /* if (counter % 2 == 0)
+        {
+            if (i + minrun < arr.get_size())
+                merge(arr, i - minrun, i, i + minrun);
+            else 
+                merge(arr, i - minrun, i, arr.get_size());
+        } */
+    }
 }
 
 int main()
