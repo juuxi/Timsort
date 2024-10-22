@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <iostream>
 
 template<typename V>
 class Vector
@@ -14,7 +15,8 @@ public:
     void remove(size_t);
     size_t get_size() {return size;}
     V& operator[] (size_t index);
-    V get_value(size_t);
+    template <typename V2>
+    friend std::ostream& operator<<(std::ostream&, Vector<V>&);
 private:
     void ensure_capacity();
 };
@@ -23,7 +25,7 @@ template<typename V>
 void Vector<V>::add(size_t _pos, V _value)
 { 
     ensure_capacity();
-    for (int i = size - 1; i > _pos-2; i--)
+    for (int i = size - 1; i > int(_pos)-2; i--)
         arr[i+1] = arr[i];
     arr[_pos - 1] = _value;
     size++;
@@ -53,17 +55,21 @@ void Vector<V>::ensure_capacity()
             new_arr[i] = arr[i];
         delete[] arr;
         arr = new_arr;
+        full_size *= 2;
     }
-}
-
-template<typename V>
-V Vector<V>::get_value(size_t pos)
-{
-    return arr[pos - 1];
 }
 
 template<typename V>
 V& Vector<V>::operator[](size_t index)
 {
     return arr[index];
+}
+
+template<typename V>
+std::ostream& operator<< (std::ostream& os, Vector<V>& vec)
+{
+    for (size_t i = 0; i < vec.get_size(); i++)
+        os << vec[i] << " ";
+    os << std::endl;
+    return os;
 }

@@ -4,25 +4,35 @@
 
 int count_minrun(int N)
 {
-  if(N < 64) 
+    if(N < 64) 
     return N;
-  int r = 0;
-  while(N > 64)
+    int r = 0;
+    while(N > 64)
     r |= N&1;
     N>>=1;
-  return N + r;
+    return N + r;
 }
 
-void insert_sort(Vector<int> &arr)
+void insert_sort(Vector<int> &arr, size_t left, size_t right)
 {
-  for(size_t i = 1; i < arr.get_size(); i++)
-  {
+    for(size_t i = left + 1; i < right; i++)
+    {
     int value = arr[i];
     int j;
     for (j = i-1; j >= 0 && value < arr[j]; j--)
-      arr[j+1] = arr[j];
+        arr[j+1] = arr[j];
     arr[j] = value;
-  }
+    }
+}
+
+void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
+{
+
+}
+
+void timsort(Vector<int> &arr, const int& minrun)
+{
+    
 }
 
 int main()
@@ -34,7 +44,10 @@ int main()
     srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
-        vec.push_back(rand());
+        vec.push_back(rand() % 65536);
     }
+    int minrun = count_minrun(size);
+    timsort(vec, minrun);
+    std::cout << vec;    
     return 0;
 }
