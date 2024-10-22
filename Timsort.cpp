@@ -38,13 +38,16 @@ void timsort(Vector<int> &arr, const int& minrun)
             insert_sort(arr, i, i + minrun);
         else 
             insert_sort(arr, i, arr.get_size());
-        /* if (counter % 2 == 0)
+    }
+    for (size_t multiplier = 0; multiplier * minrun < arr.get_size(); multiplier++)
+    {
+        for (size_t i = 0; i < arr.get_size(); i+= multiplier * minrun)
         {
             if (i + minrun < arr.get_size())
                 merge(arr, i - minrun, i, i + minrun);
             else 
                 merge(arr, i - minrun, i, arr.get_size());
-        } */
+        }
     }
 }
 
