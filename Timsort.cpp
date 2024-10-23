@@ -25,9 +25,51 @@ void insert_sort(Vector<int> &arr, size_t left, size_t right)
     }
 }
 
+//left = 0; mid = 32; right = 64;
 void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
 {
+    Vector<int> sub;
+    for (size_t i = left, j = 0; i < mid; i++, j++)
+    {
+        sub[j] = arr[i];
+    }
+    int* left_curr = &sub[0];
+    int* right_curr = &arr[mid];
+    int* arr_curr = &arr[left];
+    size_t right_counter = 0, left_counter = 0;
+    while (true) 
+    {
+        if (*left_curr <= *right_curr)
+        {
+            *arr_curr = *left_curr;
+            left_curr++;
+            left_counter++;
+            right_counter = 0;
+        }
+        else 
+        {
+            *arr_curr = *right_curr;
+            right_curr++;
+            right_counter++;
+            left_counter = 0;
+        }
+        arr_curr++;
 
+        if (left_curr == &sub[mid-left]) //mid-left = size(sub)
+        {
+            break;
+        }
+        if (right_curr == &arr[right])
+        {
+            while(left_curr != &arr[mid-left])
+            {
+                *arr_curr = *left_curr;
+                left_curr++;
+                arr_curr++;
+            }
+            break;
+        }
+    }
 }
 
 void timsort(Vector<int> &arr, const int& minrun)
