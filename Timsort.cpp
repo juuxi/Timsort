@@ -25,6 +25,32 @@ void insert_sort(Vector<int> &arr, size_t left, size_t right)
     }
 }
 
+void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, const int right_curr, int &arr_curr, bool is_left)
+{
+    int galloping_curr = -1;
+    //binary search
+    if (is_left)
+    {
+        int left = left_curr;
+        int right = sub.get_size();
+        while (galloping_curr != left && galloping_curr != right)
+        {
+            galloping_curr = (right + left)/2;
+            if (sub[galloping_curr] < arr[right_curr])
+            {
+                for (size_t i = left; i <= galloping_curr; i++)
+                {
+                    arr[arr_curr] = sub[i];
+                    arr_curr++;
+                }
+                left = galloping_curr;
+                left_curr = galloping_curr;
+            }
+            else 
+                right = galloping_curr;
+        }
+    }
+}
 //left = 0; mid = 32; right = 64;
 void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
 {
@@ -33,42 +59,47 @@ void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
     {
         sub[j] = arr[i];
     }
-    int* left_curr = &sub[0];
-    int* right_curr = &arr[mid];
-    int* arr_curr = &arr[left];
+    int left_curr = 0; //sub
+    int right_curr = mid; //arr
+    int arr_curr = left; //arr
     size_t right_counter = 0, left_counter = 0;
     while (true) 
     {
-        if (*left_curr <= *right_curr)
+        if (sub[left_curr] <= arr[right_curr])
         {
-            *arr_curr = *left_curr;
+            arr[arr_curr] = sub[left_curr];
             left_curr++;
             left_counter++;
             right_counter = 0;
         }
         else 
         {
-            *arr_curr = *right_curr;
+            arr[arr_curr] = arr[right_curr];
             right_curr++;
             right_counter++;
             left_counter = 0;
         }
         arr_curr++;
 
-        if (left_curr == &sub[mid-left]) //mid-left = size(sub)
+        if (left_curr == sub.get_size()) //mid-left = size(sub)
         {
             break;
         }
-        if (right_curr == &arr[right])
+        if (right_curr == right)
         {
-            while(left_curr != &arr[mid-left])
+            while(left_curr != sub.get_size())
             {
-                *arr_curr = *left_curr;
+                arr[arr_curr] = sub[left_curr];
                 left_curr++;
                 arr_curr++;
             }
             break;
         }
+
+        if (left_counter == 7)
+            galloping(arr, sub, left_curr, right_curr, arr_curr, true);
+        if (right_counter == 7)
+            galloping(arr, sub, left_curr, right_curr, arr_curr, false);
     }
 }
 
