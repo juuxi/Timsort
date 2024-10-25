@@ -54,10 +54,10 @@ void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, const int rig
 //left = 0; mid = 32; right = 64;
 void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
 {
-    Vector<int> sub;
+    Vector<int> sub(1);
     for (size_t i = left, j = 0; i < mid; i++, j++)
     {
-        sub[j] = arr[i];
+        sub.push_back(arr[i]);
     }
     int left_curr = 0; //sub
     int right_curr = mid; //arr
@@ -105,7 +105,7 @@ void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
 
 void timsort(Vector<int> &arr, const int& minrun)
 {
-    
+    merge(arr, 0, 25, 50);
 }
 
 int main()
@@ -117,7 +117,15 @@ int main()
     srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
-        vec.push_back(rand() % 65536);
+        //vec.push_back(rand() % 65536);
+        if (i < 20)
+            vec.push_back(i);
+        if (i >= 20 && i < 25)
+            vec.push_back(i+100);
+        if (i >= 25 && i < 30)
+            vec.push_back(i);
+        if (i >= 30)
+            vec.push_back(i+100);
     }
     int minrun = count_minrun(size);
     timsort(vec, minrun);
