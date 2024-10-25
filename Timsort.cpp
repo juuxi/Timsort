@@ -133,9 +133,9 @@ void timsort(Vector<int> &arr, const int& minrun)
         else 
             insert_sort(arr, i, arr.get_size());
     }
-    for (size_t multiplier = 0; multiplier * minrun < arr.get_size(); multiplier++)
+    for (size_t multiplier = 1; multiplier * minrun < arr.get_size(); multiplier++)
     {
-        for (size_t i = 0; i < arr.get_size(); i+= multiplier * minrun)
+        for (size_t i = multiplier * minrun; i < arr.get_size(); i+= multiplier * minrun)
         {
             if (i + minrun < arr.get_size())
                 merge(arr, i - minrun, i, i + minrun);
@@ -154,7 +154,7 @@ int main()
     srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
-        vec.push_back(rand() % 65536);
+        vec.push_back(rand() % 1000);
     }
     int minrun = count_minrun(size);
     timsort(vec, minrun);
