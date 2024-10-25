@@ -8,8 +8,10 @@ int count_minrun(int N)
     return N;
     int r = 0;
     while(N > 64)
-    r |= N&1;
-    N>>=1;
+    {
+        r |= N&1;
+        N>>=1;
+    }
     return N + r;
 }
 
