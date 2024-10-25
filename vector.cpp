@@ -22,19 +22,19 @@ private:
 };
 
 template<typename V>
-void Vector<V>::add(size_t _pos, V _value)
+void Vector<V>::add(size_t index, V _value)
 { 
     ensure_capacity();
-    for (int i = size - 1; i > int(_pos)-2; i--)
-        arr[i+1] = arr[i];
-    arr[_pos - 1] = _value;
+    for (int i = size; i > int(index)-1; i--)
+        arr[i] = arr[i - 1];
+    arr[index] = _value;
     size++;
 }
 
 template<typename V>
 void Vector<V>::push_back(V _value)
 { 
-    this->add(1, _value);
+    this->add(size, _value);
 }
 
 template<typename V>
