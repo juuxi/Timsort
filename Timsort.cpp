@@ -25,7 +25,7 @@ void insert_sort(Vector<int> &arr, size_t left, size_t right)
     }
 }
 
-void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, const int right_curr, int &arr_curr, bool is_left)
+void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, int &right_curr, const int _right, int &arr_curr, bool is_left)
 {
     int galloping_curr = -1;
     //binary search
@@ -45,6 +45,27 @@ void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, const int rig
                 }
                 left = galloping_curr;
                 left_curr = galloping_curr;
+            }
+            else 
+                right = galloping_curr;
+        }
+    }
+    else 
+    {
+        int left = right_curr;
+        int right = _right;
+        while (galloping_curr != left && galloping_curr != right)
+        {
+            galloping_curr = (right + left)/2;
+            if (arr[galloping_curr] < sub[left_curr])
+            {
+                for (size_t i = left; i <= galloping_curr; i++)
+                {
+                    arr[arr_curr] = arr[i];
+                    arr_curr++;
+                }
+                left = galloping_curr;
+                right_curr = galloping_curr;
             }
             else 
                 right = galloping_curr;
@@ -97,9 +118,9 @@ void merge(Vector<int> &arr, size_t left, size_t mid, size_t right)
         }
 
         if (left_counter == 7)
-            galloping(arr, sub, left_curr, right_curr, arr_curr, true);
+            galloping(arr, sub, left_curr, right_curr, right, arr_curr, true);
         if (right_counter == 7)
-            galloping(arr, sub, left_curr, right_curr, arr_curr, false);
+            galloping(arr, sub, left_curr, right_curr, right, arr_curr, false);
     }
 }
 
@@ -117,15 +138,7 @@ int main()
     srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
-        //vec.push_back(rand() % 65536);
-        if (i < 20)
-            vec.push_back(i);
-        if (i >= 20 && i < 25)
-            vec.push_back(i+100);
-        if (i >= 25 && i < 30)
-            vec.push_back(i);
-        if (i >= 30)
-            vec.push_back(i+100);
+        vec.push_back(rand() % 65536);
     }
     int minrun = count_minrun(size);
     timsort(vec, minrun);
