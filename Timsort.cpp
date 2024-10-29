@@ -19,13 +19,15 @@ void insert_sort(Vector<int> &arr, size_t left, size_t right)
 {
     for(size_t i = left + 1; i < right; i++)
     {
-    int value = arr[i];
-    int j;
-    for (j = i-1; j >= 0 && value < arr[j]; j--)
-        arr[j+1] = arr[j];
-    arr[j] = value;
-    }
-}
+        int value = arr[i];
+        for (int j = i-1; j >= left && value < arr[j]; j--)
+        {
+            int temp = arr[j];
+            arr[j] = arr[j+1];
+            arr[j+1] = temp;
+        }
+    } 
+} 
 
 void galloping(Vector<int> &arr, Vector<int> &sub, int &left_curr, int &right_curr, const int _right, int &arr_curr, bool is_left)
 {
@@ -135,16 +137,39 @@ void timsort(Vector<int> &arr, const int& minrun)
         else 
             insert_sort(arr, i, arr.get_size());
     }
-    for (size_t multiplier = 1; multiplier * minrun < arr.get_size(); multiplier++)
+    /* int loop_counter = 0;
+    for (size_t multiplier = 1; ; multiplier++)
     {
-        for (size_t i = multiplier * minrun; i < arr.get_size(); i+= multiplier * minrun)
+        if (loop_counter == 1)
+            break;
+        loop_counter = 0;
+        for (size_t i = multiplier * minrun; i < arr.get_size(); i+= multiplier * minrun * 2)
         {
-            if (i + minrun < arr.get_size())
-                merge(arr, i - minrun, i, i + minrun);
+            if (i + multiplier * minrun < arr.get_size())
+                merge(arr, i - multiplier * minrun, i, i + multiplier * minrun - 1);
             else 
-                merge(arr, i - minrun, i, arr.get_size());
+                merge(arr, i - multiplier * minrun, i, arr.get_size() - 1);
+            std::cout << multiplier << " merge:" << std::endl;
+            std::cout << arr;
+            loop_counter++;
         }
-    }
+    } */
+    std::cout << "insert: " << std::endl;
+    std::cout << arr;
+    for (int size = minrun; size < arr.get_size(); size = 2 * size) 
+    { 
+        for (int left = 0; left < arr.get_size(); left += 2 * size) 
+        { 
+            int mid = left + size; 
+            int right;
+            if ((left + 2 * size) < (arr.get_size()))
+                right = (left + 2 * size);
+            else 
+                right = arr.get_size();
+            if (mid < right) 
+                merge(arr, left, mid, right); 
+        } 
+    } 
 }
 
 int main()
@@ -158,8 +183,11 @@ int main()
     {
         vec.push_back(rand() % 1000);
     }
+    std::cout << "Начальный массив:" << std::endl;
+    std::cout << vec;
     int minrun = count_minrun(size);
     timsort(vec, minrun);
+    std::cout << "Отсоритированный массив:" << std::endl;
     std::cout << vec;    
     return 0;
 }

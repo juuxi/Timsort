@@ -69,7 +69,11 @@ template<typename V>
 std::ostream& operator<< (std::ostream& os, Vector<V>& vec)
 {
     for (size_t i = 0; i < vec.get_size(); i++)
+    {
         os << vec[i] << " ";
+        if ((i + 1) % 25 == 0 && i != 0)
+            os << "\n";
+    }
     os << std::endl;
     return os;
 }
